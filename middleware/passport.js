@@ -38,5 +38,9 @@ passport.serializeUser(function(user, cb){
 
 passport.deserializeUser(async function (user, cb) {
     // const dbUser = await User.findByPk(user.id);
-    //Slide 24
+    process.nextTick(function(){
+        return cb(null, user);
+    });
 });
+
+module.exports.passport = passport;

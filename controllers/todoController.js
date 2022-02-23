@@ -2,7 +2,11 @@ const { Todo } = require('../models');
 
 
 module.exports.listAll = async function(req, res) {
-    const todos = await Todo.findAll();
+    const todos = await Todo.findAll({
+        where: {
+            user_id: req.user.id
+        }
+    });
 
     let completeItems = todos.filter(item => item.complete);
     let incompleteItems = todos.filter(item => !item.complete);
@@ -18,14 +22,17 @@ module.exports.displayAddItem = function(req, res) {
     const item = {
         name: '',
         description: '',
-    }
+    };
     res.render('todos/newItem', {
         item
     })
 };
 
 module.exports.addNewItem = async function(req, res){
-    await Todo.create({description: req.body.description});
+    await Todo.create({
+        description: req.body.description,
+        user_id: req.user.id
+    });
     res.redirect('/');
 };
 
@@ -41,7 +48,7 @@ module.exports.saveEditItem = async function(req, res) {
         where:{
             id: req.params.id,
         }
-    })
+    });
     res.redirect('/');
 };
 
@@ -51,7 +58,7 @@ module.exports.deleteItem = async function(req, res) {
         where: {
             id: req.params.id
         }
-    })
+    });
     res.redirect('/');
 };
 
@@ -61,7 +68,7 @@ module.exports.makeItemComplete = async function(req, res) {
         where:{
             id: req.params.id,
         }
-    })
+    });
     res.redirect('/');
 };
 
@@ -71,7 +78,7 @@ module.exports.markItemIncomplete = async function(req, res) {
         where:{
             id: req.params.id,
         }
-    })
+    });
     res.redirect('/');
 };
 
