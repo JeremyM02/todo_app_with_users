@@ -35,7 +35,7 @@ module.exports.renderLogin = function(req, res){
     res.render('users/login', {error});
 };
 
-module.exports.autheticate = passport.authenticate('local', {
+module.exports.authenticate = passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureMessage: true
